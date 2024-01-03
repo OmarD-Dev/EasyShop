@@ -75,12 +75,16 @@ public class CategoriesController
     {
         // insert the category
         try {
+            if (categoryDao.create(category)!= null){
+                throw new ResponseStatusException(HttpStatus.CREATED);
+            }
             return categoryDao.create(category);
         }catch (Exception e){
             throw new ResponseStatusException(
                     HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong please try again."
             );
         }
+
     }
 
     // add annotation to call this method for a PUT (update) action - the url path must include the categoryId
