@@ -10,6 +10,8 @@ import org.yearup.data.ProductDao;
 import org.yearup.models.Category;
 import org.yearup.models.Product;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.swing.text.Caret;
 import java.util.List;
 
@@ -71,14 +73,15 @@ public class CategoriesController
     @PostMapping
     // add annotation to ensure that only an ADMIN can call this function
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Category addCategory(@RequestBody Category category)
+    public Category addCategory(@RequestBody Category category, HttpServletResponse response)
     {
         // insert the category
         try {
-            if (categoryDao.create(category)!= null){
-                throw new ResponseStatusException(HttpStatus.CREATED);
+             Category cat= categoryDao.create(category);
+            if (cat!= null){
+                 response.setStatus(HttpStatus.CREATED.value());
             }
-            return categoryDao.create(category);
+            return cat;
         }catch (Exception e){
             throw new ResponseStatusException(
                     HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong please try again."
@@ -91,16 +94,11 @@ public class CategoriesController
     @PutMapping("{id}")
     // add annotation to ensure that only an ADMIN can call this function
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ResponseStatus(HttpStatus.OK)
     public void updateCategory(@PathVariable int id, @RequestBody Category category)
     {
         // update the category by id
-        try {
              categoryDao.update(id,category);
-        }catch (Exception e){
-            throw new ResponseStatusException(
-                    HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong, please try again."
-            );
-        }
     }
 
 
@@ -108,18 +106,15 @@ public class CategoriesController
     // add annotation to ensure that only an ADMIN can call this function
     @DeleteMapping("{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void deleteCategory(@PathVariable int id)
+    public void deleteCategory(@PathVariable int id, HttpServletResponse response)
     {
         // delete the category by id
-        try {
-            categoryDao.delete(id);
-        }catch (Exception e){
-            throw new ResponseStatusException(
-                    HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong, please try again"
-            );
-        }
-         if (categoryDao.getById(id)== null){
-            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Successfully deleted");
-        }
+            if(categoryDao.getById(id)== null){
+                response.setStatus(HttpStatus.NOT_FOUND.value());
+            }else {
+                categoryDao.delete(id);
+                response.setStatus(HttpStatus.NO_CONTENT.value());
+
+            }
     }
 }
