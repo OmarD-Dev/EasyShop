@@ -8,6 +8,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.yearup.models.Product;
 import org.yearup.data.ProductDao;
 
+import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -63,10 +64,11 @@ public class ProductsController
 
     @PostMapping()
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Product addProduct(@RequestBody Product product)
+    public Product addProduct(@RequestBody Product product, HttpServletResponse response)
     {
         try
         {
+            response.setStatus(HttpStatus.CREATED.value());
             return productDao.create(product);
         }
         catch(Exception ex)

@@ -99,6 +99,8 @@ public class CategoriesController
     {
         // update the category by id
              categoryDao.update(id,category);
+
+
     }
 
 

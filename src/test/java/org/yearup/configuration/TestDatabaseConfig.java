@@ -76,7 +76,7 @@ public class TestDatabaseConfig
         dataSource.setPassword(password);
         dataSource.setAutoCommit(false);
         dataSource.setSuppressClose(true);
-
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         ScriptRunner runner = new ScriptRunner(dataSource.getConnection());
         Reader reader = new BufferedReader(new FileReader((new ClassPathResource("test-data.sql")).getFile().getAbsolutePath()));
         runner.runScript(reader);
