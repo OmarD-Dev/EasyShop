@@ -28,6 +28,14 @@ public class MySqlOrderLineItemDao extends MySqlDaoBase implements OrderLineItem
         List<OrderLineItem> orderLineItems = new ArrayList<>();
 
         try (Connection connection= getConnection()){
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1,orderId);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()){
+                orderLineItems.add(mapRow(resultSet));
+            }
 
         }catch (SQLException e){
             throw new RuntimeException(e);
