@@ -73,11 +73,6 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
     }
 
     @Override
-    public void removeProductFromCart(int productId, int userId) {
-
-    }
-
-    @Override
     public void updateProductQuantity(int productId, int userId, int quantity) {
         String updateSql = """
             UPDATE shopping_cart
