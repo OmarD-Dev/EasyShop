@@ -6,9 +6,9 @@
 
 1. [Description](#Description)
 2. [Features](#features)
-3. [User Guide](#UserGuide)
-4. [References](#References)
-6. [Acknowledgments](#Ackknowledgments)
+3. [Built With](#built-with)
+3. [User Guide](#user-guide)
+4. [Controllers](#controllers)
 
 
 ## Description
